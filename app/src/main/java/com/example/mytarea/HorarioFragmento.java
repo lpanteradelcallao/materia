@@ -55,7 +55,7 @@ public class HorarioFragmento extends Fragment {
         adapter = new MyAdapter(requireActivity(), dataList);
         recyclerView.setAdapter(adapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+        databaseReference = FirebaseDatabase.getInstance().getReference("lista");
         dialog.show();
 
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {

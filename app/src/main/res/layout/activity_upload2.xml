@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UploadActivity">
+    tools:context=".UploadActivity2">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -33,47 +33,15 @@
                 android:textAlignment="center"
                 android:textColor="@color/lavender"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/uploadimg"
-                android:id="@+id/uploadImage"
-                android:layout_marginTop="10dp"
-                android:scaleType="fitXY"/>
 
-
-
-            <Spinner
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:id="@+id/uploadTopic"
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:gravity="start|center_vertical"
-                android:prompt="@string/select_topic"
-                android:textColor="@color/lavender"/>
-
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:id="@+id/uploadDesc"
-                android:background="@drawable/lavender_border"
-                android:layout_marginTop="20dp"
-                android:padding="16dp"
-                android:hint="Enter descripcion"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:id="@+id/uploadLang"
-                android:background="@drawable/lavender_border"
-                android:layout_marginTop="20dp"
-                android:padding="16dp"
-                android:hint="Enter fecha"
+                android:hint="Enter topic name"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 

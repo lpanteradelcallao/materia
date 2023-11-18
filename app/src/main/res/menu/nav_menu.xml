@@ -20,7 +20,7 @@
         <item
             android:id="@+id/nav_tarea"
             android:icon="@drawable/nav_settings"
-            android:title="Tareas"/>
+            android:title="Curso"/>
 
         <item
             android:id="@+id/nav_informacion"

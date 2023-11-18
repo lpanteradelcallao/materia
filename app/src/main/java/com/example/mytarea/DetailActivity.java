@@ -50,7 +50,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("lista");
                 FirebaseStorage storage = FirebaseStorage.getInstance();
 
                 StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
