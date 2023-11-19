@@ -15,19 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/recLang3"
-            android:layout_width="119dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="29dp"
-            android:layout_toEndOf="@id/recTitle"
-            android:text="fecha inicio"
-            android:textAlignment="center"
-            android:textColor="@color/lavender"
-            android:textSize="16sp" />
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/recImage"
             android:layout_width="60dp"
@@ -51,40 +38,14 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/recLang"
+            android:id="@+id/recLang7"
             android:layout_width="138dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="26dp"
             android:layout_toEndOf="@id/recTitle"
-            android:text="priority"
-            android:textAlignment="center"
-            android:textColor="@color/lavender"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/recDesc"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/recTitle"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="12dp"
-            android:layout_toEndOf="@id/recImage"
-            android:maxLines="1"
-            android:text="desc"
-            android:textColor="@color/lavender"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/recLang4"
-            android:layout_width="111dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="55dp"
-            android:layout_toEndOf="@id/recTitle"
-            android:text="fecha fin"
+            android:text="hora"
             android:textAlignment="center"
             android:textColor="@color/lavender"
             android:textSize="16sp" />

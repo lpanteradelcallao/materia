@@ -39,6 +39,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.recTitle.setText(dataList.get(position).getDataTitle());
         holder.recDesc.setText(dataList.get(position).getDataDesc());
         holder.recLang.setText(dataList.get(position).getDataLang());
+        holder.recLang3.setText(dataList.get(position).getStartTime());
+        holder.recLang4.setText(dataList.get(position).getEndTime());
 
         holder.recCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 class MyViewHolder extends RecyclerView.ViewHolder{
 
     ImageView recImage;
-    TextView recTitle, recDesc, recLang;
+    TextView recTitle, recDesc, recLang, recLang3, recLang4;
     CardView recCard;
 
     public MyViewHolder(@NonNull View itemView) {
@@ -77,5 +79,7 @@ class MyViewHolder extends RecyclerView.ViewHolder{
         recDesc = itemView.findViewById(R.id.recDesc);
         recLang = itemView.findViewById(R.id.recLang);
         recTitle = itemView.findViewById(R.id.recTitle);
+        recLang3 = itemView.findViewById(R.id.recLang3);
+        recLang4 = itemView.findViewById(R.id.recLang4);
     }
 }

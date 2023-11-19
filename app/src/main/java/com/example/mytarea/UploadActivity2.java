@@ -64,7 +64,7 @@ public class UploadActivity2 extends AppCompatActivity {
 
     public void saveData() {
         String title = uploadTopic.getText().toString();
-        DataClass dataClass = new DataClass(title, "", "", ""); // Solo subir el dato uploadTopic
+        DataClass dataClass = new DataClass(title, "", "", "","",""); // Solo subir el dato uploadTopic
 
         FirebaseDatabase.getInstance().getReference("lista2").child(title)
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {

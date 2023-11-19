@@ -1,9 +1,9 @@
 package com.example.mytarea;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -45,7 +46,7 @@ public class UploadActivity extends AppCompatActivity {
 
     ImageView uploadImage;
     Button saveButton;
-    EditText uploadDesc, uploadLang;
+    EditText uploadDesc, uploadLang, uploadStartTime, uploadEndTime;
     Spinner uploadTopicSpinner;
     String imageURL;
     Uri uri;
@@ -65,6 +66,8 @@ public class UploadActivity extends AppCompatActivity {
         uploadImage = findViewById(R.id.uploadImage);
         uploadDesc = findViewById(R.id.uploadDesc);
         uploadLang = findViewById(R.id.uploadLang);
+        uploadStartTime = findViewById(R.id.uploadStartTime);
+        uploadEndTime = findViewById(R.id.uploadEndTime);
         uploadTopicSpinner = findViewById(R.id.uploadTopic);
         saveButton = findViewById(R.id.saveButton);
 
@@ -119,6 +122,20 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
+        uploadStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showStartTimePicker(v);
+            }
+        });
+
+        uploadEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEndTimePicker(v);
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,6 +165,34 @@ public class UploadActivity extends AppCompatActivity {
         );
 
         datePickerDialog.show();
+    }
+
+    private void showStartTimePicker(View view) {
+        showTimePicker(uploadStartTime);
+    }
+
+    private void showEndTimePicker(View view) {
+        showTimePicker(uploadEndTime);
+    }
+
+    private void showTimePicker(final EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String selectedTime = hourOfDay + ":" + minute;
+                        editText.setText(selectedTime);
+                    }
+                },
+                hour, minute, true
+        );
+
+        timePickerDialog.show();
     }
 
     private void loadTopics() {
@@ -201,8 +246,10 @@ public class UploadActivity extends AppCompatActivity {
     private void uploadData() {
         String desc = uploadDesc.getText().toString();
         String lang = uploadLang.getText().toString();
+        String startTime = uploadStartTime.getText().toString();
+        String endTime = uploadEndTime.getText().toString();
 
-        DataClass dataClass = new DataClass(selectedTopic, desc, lang, imageURL);
+        DataClass dataClass = new DataClass(selectedTopic, desc, lang, imageURL, startTime, endTime);
 
         FirebaseDatabase.getInstance().getReference("lista").child(selectedTopic)
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {

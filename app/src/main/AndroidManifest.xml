@@ -3,6 +3,8 @@
     package="com.example.mytarea">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -36,7 +38,7 @@
                 android:value="" />
         </activity>
 
-        <!-- Agrega la declaración para DetailActivity -->
+
         <activity
             android:name=".DetailActivity"
             android:exported="false" />

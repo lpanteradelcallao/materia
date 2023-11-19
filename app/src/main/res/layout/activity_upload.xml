@@ -41,8 +41,6 @@
                 android:layout_marginTop="10dp"
                 android:scaleType="fitXY"/>
 
-
-
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -54,7 +52,6 @@
                 android:prompt="@string/select_topic"
                 android:textColor="@color/lavender"/>
 
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -62,7 +59,7 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter descripcion"
+                android:hint="Enter description"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
 
@@ -73,9 +70,35 @@
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter fecha"
+                android:hint="Enter date"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/uploadStartTime"
+                android:background="@drawable/lavender_border"
+                android:layout_marginTop="20dp"
+                android:padding="16dp"
+                android:hint="Select start time"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/lavender"
+                android:focusable="false"
+                android:onClick="showStartTimePicker"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/uploadEndTime"
+                android:background="@drawable/lavender_border"
+                android:layout_marginTop="20dp"
+                android:padding="16dp"
+                android:hint="Select end time"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/lavender"
+                android:focusable="false"
+                android:onClick="showEndTimePicker"/>
 
             <Button
                 android:layout_width="match_parent"
