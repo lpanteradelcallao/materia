@@ -1,12 +1,15 @@
 package com.example.mytarea;
-
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,28 +18,26 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +58,7 @@ public class UploadActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerAdapter;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private MaterialTimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,14 +127,14 @@ public class UploadActivity extends AppCompatActivity {
         uploadStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showStartTimePicker(v);
+                showStartTimePicker();
             }
         });
 
         uploadEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEndTimePicker(v);
+                showEndTimePicker();
             }
         });
 
@@ -167,11 +169,11 @@ public class UploadActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void showStartTimePicker(View view) {
+    private void showStartTimePicker() {
         showTimePicker(uploadStartTime);
     }
 
-    private void showEndTimePicker(View view) {
+    private void showEndTimePicker() {
         showTimePicker(uploadEndTime);
     }
 
@@ -180,19 +182,34 @@ public class UploadActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String selectedTime = hourOfDay + ":" + minute;
-                        editText.setText(selectedTime);
-                    }
-                },
-                hour, minute, true
-        );
+        timePicker = new MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(hour)
+                .setMinute(minute)
+                .build();
 
-        timePickerDialog.show();
+        timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hourOfDay = timePicker.getHour();
+                String selectedTime = String.format("%02d:%02d", hourOfDay, timePicker.getMinute());
+
+                if (!DateFormat.is24HourFormat(UploadActivity.this)) {
+                    // Convert to AM/PM format if not in 24-hour format
+                    String amPm = (hourOfDay < 12) ? "AM" : "PM";
+                    if (hourOfDay > 12) {
+                        hourOfDay -= 12;
+                    } else if (hourOfDay == 0) {
+                        hourOfDay = 12;
+                    }
+                    selectedTime = String.format("%02d:%02d %s", hourOfDay, timePicker.getMinute(), amPm);
+                }
+
+                editText.setText(selectedTime);
+            }
+        });
+
+        timePicker.show(getSupportFragmentManager(), "timePicker");
     }
 
     private void loadTopics() {
@@ -216,31 +233,35 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("lista Images")
-                .child(uri.getLastPathSegment());
+        if (uri != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("lista Images")
+                    .child(uri.getLastPathSegment());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(UploadActivity.this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progress_layout);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(UploadActivity.this);
+            builder.setCancelable(false);
+            builder.setView(R.layout.progress_layout);
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
-        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri urlImage = uriTask.getResult();
-                imageURL = urlImage.toString();
-                uploadData();
+            storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                storageReference.getDownloadUrl().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        imageURL = downloadUri.toString();
+                        uploadData();
+                        dialog.dismiss();
+                    } else {
+                        dialog.dismiss();
+                        Toast.makeText(UploadActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).addOnFailureListener(e -> {
                 dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-            }
-        });
+                Toast.makeText(UploadActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            Toast.makeText(UploadActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void uploadData() {
@@ -252,19 +273,61 @@ public class UploadActivity extends AppCompatActivity {
         DataClass dataClass = new DataClass(selectedTopic, desc, lang, imageURL, startTime, endTime);
 
         FirebaseDatabase.getInstance().getReference("lista").child(selectedTopic)
-                .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UploadActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                .setValue(dataClass).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        setAlarm(startTime);
+
+                        Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(UploadActivity.this, "Failed to save data", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void setAlarm(String startTime) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(UploadActivity.this, AlarmReceiver.class);
+
+        int requestCode = 0;
+
+
+        String[] timeComponents = startTime.split(":");
+        int hour = Integer.parseInt(timeComponents[0]);
+        int minute = Integer.parseInt(timeComponents[1]);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        PendingIntent pendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+            pendingIntent = PendingIntent.getBroadcast(
+                    UploadActivity.this,
+                    requestCode,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(
+                    UploadActivity.this,
+                    requestCode,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
     }
 }

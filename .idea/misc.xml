@@ -3,9 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable-v24/background_splashscren.xml" value="0.247" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2695" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/alarm.xml" value="0.2325" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/alarm_icon.xml" value="0.2695" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/custom_edittext.xml" value="0.2495" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2495" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.2495" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/ic_notification.xml" value="0.2325" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/lavender_border.xml" value="0.1695" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/nav_logout.xml" value="0.196" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/drawable/search_bkg.xml" value="0.195" />
@@ -13,9 +18,11 @@
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_detailho.xml" value="0.265625" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_notifications.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_update.xml" value="0.265625" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_upload.xml" value="0.25" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/activity_upload2.xml" value="0.365625" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/background_splashscren.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/fragment_cuenta1.xml" value="0.358695652173913" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/fragment_home.xml" value="0.358695652173913" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/Mytarea/app/src/main/res/layout/fragment_home_fragmento.xml" value="0.35260416666666666" />
